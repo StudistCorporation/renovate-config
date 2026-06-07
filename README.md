@@ -1,23 +1,24 @@
 # renovate-config
 
-Org-wide Renovate inheritance config for `StudistCorporation`.
+Org-wide Renovate inheritance config and shared preset for `StudistCorporation`.
 
 ## What this repo does
 
 The Mend-hosted Renovate App auto-discovers `<org>/renovate-config/org-inherited-config.json` and applies it to every Renovate run across the org — no per-repo setup required.
 
-The shared `default.json5` preset that every onboarded repo extends is hosted in `StudistCorporation/.github`.
+This repo also hosts the shared `default.json5` preset that every onboarded repo extends.
 
 ```
-       Mend                       this repo                    .github repo                each repo
-  ┌────────────┐            ┌─────────────────────┐      ┌──────────────────┐        ┌──────────────────────┐
-  │            │            │                     │      │                  │        │                      │
-  │  Renovate  │ ──reads──▶ │ org-inherited-      │      │ default.json5    │◀extends│  .github/            │
-  │  App       │            │   config.json       │      │  (shared preset) │        │    renovate.json5    │
-  │  (hosted)  │            │                     │      │                  │        │                      │
-  └─────┬──────┘            └─────────────────────┘      └──────────────────┘        └──────────┬───────────┘
-        │                                                                                       ▲
-        └──── onboards (opens initial Renovate onboarding PR) ──────────────────────────────────┘
+       Mend                       this repo                       each repo
+  ┌────────────┐            ┌─────────────────────┐         ┌──────────────────────┐
+  │            │            │ org-inherited-      │         │                      │
+  │  Renovate  │ ──reads──▶ │   config.json       │         │  .github/            │
+  │  App       │            │                     │         │    renovate.json5    │
+  │  (hosted)  │            │ default.json5       │◀extends─│                      │
+  │            │            │  (shared preset)    │         │                      │
+  └─────┬──────┘            └─────────────────────┘         └──────────┬───────────┘
+        │                                                              ▲
+        └──── onboards (opens initial Renovate onboarding PR) ─────────┘
 ```
 
 When onboarded, each repo's `.github/renovate.json5` is auto-generated with:
@@ -25,7 +26,7 @@ When onboarded, each repo's `.github/renovate.json5` is auto-generated with:
 ```json5
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>StudistCorporation/.github:default.json5"],
+  "extends": ["github>StudistCorporation/renovate-config:default.json5"],
 }
 ```
 

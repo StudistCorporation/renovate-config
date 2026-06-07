@@ -5,7 +5,7 @@
     "onboardingConfig": {
         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
         "extends": [
-            "github>StudistCorporation/.github:default.json5"
+            "github>StudistCorporation/renovate-config:default.json5"
         ]
     }
 }
