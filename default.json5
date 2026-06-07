@@ -1,0 +1,27 @@
+{
+  extends: [
+    "config:best-practices",
+
+    // https://docs.renovatebot.com/presets-default/
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone",
+
+    // https://github.com/aquaproj/aqua-renovate-config
+    "github>aquaproj/aqua-renovate-config:file#2.3.1(aqua.ya?ml|aqua/.*\\.ya?ml)",
+  ],
+
+  configmigration: true,
+  dependencyDashboard: true,
+
+  // https://docs.renovatebot.com/key-concepts/scheduling/#setting-your-timezone
+  timezone: "Asia/Tokyo",
+
+  // https://docs.renovatebot.com/key-concepts/scheduling/
+  // Full-day Monday window. The built-in `schedule:weekly` only allows
+  // PRs between 0:00–4:00 on Monday, which the Mend-hosted scheduler
+  // routinely misses and silently skips for a week (renovatebot/renovate#35532).
+  schedule: ["on monday"],
+
+  // https://docs.renovatebot.com/configuration-options/#minimumreleaseage
+  minimumReleaseAge: "5 days",
+}
