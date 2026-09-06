@@ -24,4 +24,25 @@
 
   // https://docs.renovatebot.com/configuration-options/#minimumreleaseage
   minimumReleaseAge: "5 days",
+
+  packageRules: [
+    // Digest updates are never automerged, even if a repository extending this
+    // preset turns automerge on. A digest update is what a retargeted tag looks
+    // like: an existing tag force-pushed to new commits keeps its version and
+    // its release timestamp (github-tags ages against the tag's committedDate),
+    // so no minimumReleaseAge can hold it back and Renovate cannot tell a
+    // legitimate re-tag from the tj-actions/changed-files pattern
+    // (CVE-2025-30066). Docker digests on GHCR, Quay and ECR carry no release
+    // timestamp at all. Pinning with config:best-practices only delays such a
+    // change to the next Renovate run unless the digest PR gets a human review.
+    //
+    //   https://docs.renovatebot.com/key-concepts/minimum-release-age/#digest-updates
+    //
+    // Applies to every manager (github-actions, docker, ...) on purpose, since
+    // the update type itself is the signal that needs a reviewer.
+    {
+      matchUpdateTypes: ["digest"],
+      automerge: false,
+    },
+  ],
 }
