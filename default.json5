@@ -22,6 +22,30 @@
   // routinely misses and silently skips for a week (renovatebot/renovate#35532).
   schedule: ["on monday"],
 
-  // https://docs.renovatebot.com/configuration-options/#minimumreleaseage
-  minimumReleaseAge: "5 days",
+  packageRules: [
+    // https://docs.renovatebot.com/key-concepts/minimum-release-age/
+    // config:best-practices only ages npm (security:minimumReleaseAgeNpm,
+    // 3 days, as a packageRule). Version updates in every other ecosystem
+    // (docker, github-actions, gomod, aqua, ...) get their cooldown here.
+    //
+    // This must be a packageRule, not a root-level minimumReleaseAge. A root
+    // value also applies to update types that carry no release timestamp
+    // (pin, pinDigest, digest on registries without one, lockFileMaintenance,
+    // replacement, bump, rollback), and under the default
+    // minimumReleaseAgeBehaviour=timestamp-required the renovate/stability-days
+    // check then stays pending forever instead of ageing out:
+    //
+    //   https://github.com/renovatebot/renovate/issues/45236
+    //
+    // Scoping to version updates mirrors the carve-outs Renovate's own
+    // security:minimumReleaseAge* presets apply to npm. matchDatasources
+    // negation is documented under
+    // https://docs.renovatebot.com/string-pattern-matching/#negative-matching
+    // and an update with no datasource (lockFileMaintenance) never matches it.
+    {
+      matchDatasources: ["!npm"],
+      matchUpdateTypes: ["major", "minor", "patch"],
+      minimumReleaseAge: "5 days",
+    },
+  ],
 }
